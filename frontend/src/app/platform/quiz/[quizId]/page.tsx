@@ -30,6 +30,7 @@ interface Category {
 interface Quiz {
   id: number;
   title: string;
+  niveau: string;
   description: string | null;
   category: Category;
   questions: Question[];
@@ -72,7 +73,7 @@ export default function QuizPage() {
         })
       );
       setShuffledQuiz({ ...quiz, questions: shuffledQuestions });
-      setTimeLeft(shuffledQuestions[0].time_limit || 30); // Initialiser le timer avec la première question
+      setTimeLeft(shuffledQuestions[0].time_limit || 30);
     }
   }, [quiz]);
 
@@ -127,7 +128,13 @@ export default function QuizPage() {
       currentQuestionIndex
     ].answers.find((a) => a.id === answerId)?.is_correct;
     if (isCorrect) {
-      setScore((prev) => prev + 10);
+      if(shuffledQuiz!.niveau === "Facile"){
+        setScore((prev) => prev + 10);
+      }else if (shuffledQuiz!.niveau === "Moyen") {
+        setScore((prev) => prev + 20);
+      } else {
+        setScore((prev) => prev + 30);
+      }
     }
 
     setTimeout(() => {
@@ -138,7 +145,7 @@ export default function QuizPage() {
   const handleTimeUp = () => {
     if (selectedAnswer === null) {
       const questionId = shuffledQuiz!.questions[currentQuestionIndex].id;
-      setResponses((prev) => ({ ...prev, [questionId]: -1 })); // Non répondu
+      setResponses((prev) => ({ ...prev, [questionId]: -1 }));
     }
 
     handleNextQuestion();
@@ -226,6 +233,9 @@ export default function QuizPage() {
         </h1>
         <p className="text-lg text-[hsl(var(--muted-foreground))]">
           {shuffledQuiz.description || "Pas de description"}
+        </p>
+        <p className="text-lg text-[hsl(var(--muted-foreground))]">
+          Niveau : {shuffledQuiz.niveau}
         </p>
         <p className="mt-2">
           Catégorie :{" "}

@@ -25,7 +25,11 @@ export default function AdminSidebar() {
   const menuItems = [
     { name: "Dashboard", href: "/admin", icon: BarChart },
     { name: "Quiz", href: "/admin/quizzes", icon: Book },
-    { name: "Catégories", href: "/admin/categories", icon: List },
+    { name: "Catégories Quizze", href: "/admin/categories", icon: List },
+    { name: "Qcm", href: "/admin/qcms", icon: Book },
+    { name: "Catégories QCM", href: "/admin/category-qcms", icon: List },
+    { name: "Examens", href: "/admin/examens", icon: Book },
+    { name: "Resultats d'examen", href: "/admin/examens/historiques", icon: List },
     { name: "Utilisateurs", href: "/admin/users", icon: Users },
     { name: "Paramètres", href: "/admin/settings", icon: Settings },
     { name: "Profil", href: "/admin/profile", icon: User },
@@ -37,14 +41,14 @@ export default function AdminSidebar() {
   };
 
   const sidebarContent = (
-    <nav className="flex-1 p-4 space-y-1">
+    <nav className="flex flex-col p-6 space-y-4">
       {menuItems.map((item) => (
         <Link key={item.name} href={item.href} onClick={() => setIsOpen(false)}>
           <Button
             variant={pathname === item.href ? "secondary" : "ghost"}
-            className="w-full justify-start gap-2 hover:bg-[hsl(var(--muted))] transition-colors rounded-lg py-2 text-sm"
+            className="w-full justify-start gap-3 hover:bg-[hsl(var(--muted))] transition-colors rounded-lg py-3 text-base"
           >
-            <item.icon className="h-4 w-4" />
+            <item.icon className="h-5 w-5" />
             {item.name}
           </Button>
         </Link>
@@ -60,10 +64,10 @@ export default function AdminSidebar() {
         animate="open"
         variants={sidebarVariants}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="hidden md:flex flex-col w-64 bg-[hsl(var(--background))] h-screen fixed top-0 left-0 border-r border-[hsl(var(--border))] z-40 shadow-md"
+        className="hidden md:flex flex-col w-72 bg-[hsl(var(--background))] h-screen fixed top-0 left-0 border-r border-[hsl(var(--border))] z-40 shadow-md"
       >
-        <div className="p-4 text-xl font-semibold border-b border-[hsl(var(--border))]">
-          { user?.firstname } { user?.lastname}
+        <div className="p-6 text-2xl font-semibold border-b border-[hsl(var(--border))]">
+          {user?.firstname} {user?.lastname}
         </div>
         {sidebarContent}
       </motion.div>
@@ -75,17 +79,17 @@ export default function AdminSidebar() {
             <Button
               variant="outline"
               size="icon"
-              className="fixed top-4 left-4 z-50 bg-[hsl(var(--background))] hover:bg-[hsl(var(--muted))]"
+              className="fixed top-6 left-6 z-50 bg-[hsl(var(--background))] hover:bg-[hsl(var(--muted))]"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-64 bg-[hsl(var(--background))] p-0 border-r border-[hsl(var(--border))]"
+            className="w-72 bg-[hsl(var(--background))] p-0 border-r border-[hsl(var(--border))]"
           >
-            <div className="p-4 text-xl font-semibold border-b border-[hsl(var(--border))]">
-              { user?.firstname } {user?.lastname}
+            <div className="p-6 text-2xl font-semibold border-b border-[hsl(var(--border))]">
+              {user?.firstname} {user?.lastname}
             </div>
             {sidebarContent}
           </SheetContent>

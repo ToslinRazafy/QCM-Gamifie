@@ -40,7 +40,10 @@ export default function Login() {
         router.push("/platform");
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || "An error occurred during login");
+      setError(
+        err.response?.data?.error ||
+          "Une erreur s'est produite lors de la connexion"
+      );
     } finally {
       setLoading(false);
     }
@@ -49,10 +52,9 @@ export default function Login() {
   const handleSocialLogin = async (provider: string) => {
     setLoading(true);
     try {
-      // Redirige vers l'endpoint Laravel pour l'authentification sociale
       window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/${provider}`;
     } catch (err) {
-      setError("Failed to initiate social login");
+      setError("Échec de l'initiation de la connexion sociale");
       setLoading(false);
     }
   };
@@ -67,9 +69,9 @@ export default function Login() {
       >
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardTitle className="text-2xl">Connexion</CardTitle>
             <CardDescription>
-              Enter your credentials to access your account
+              Entrez vos identifiants pour accéder à votre compte
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -88,7 +90,7 @@ export default function Login() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="m@exemple.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={loading}
@@ -101,12 +103,12 @@ export default function Login() {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Mot de passe</Label>
                   <Link
                     href="/forgot-password"
                     className="text-sm text-primary hover:underline underline-offset-4"
                   >
-                    Forgot password?
+                    Mot de passe oublié ?
                   </Link>
                 </div>
                 <Input
@@ -126,7 +128,7 @@ export default function Login() {
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  "Login"
+                  "Se connecter"
                 )}
               </Button>
             </form>
@@ -139,7 +141,7 @@ export default function Login() {
                 disabled={loading}
               >
                 <Facebook className="mr-2 h-4 w-4" />
-                Login with Facebook
+                Se connecter avec Facebook
               </Button>
               <Button
                 variant="outline"
@@ -170,17 +172,17 @@ export default function Login() {
                     fill="#EA4335"
                   />
                 </svg>
-                Login with Google
+                Se connecter avec Google
               </Button>
             </div>
 
             <div className="text-center text-sm">
-              Don’t have an account?{" "}
+              Vous n’avez pas de compte ?{" "}
               <Link
                 href="/register"
                 className="text-primary hover:underline underline-offset-4"
               >
-                Sign up
+                Inscrivez-vous
               </Link>
             </div>
           </CardContent>

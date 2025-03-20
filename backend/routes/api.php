@@ -8,6 +8,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryQcmController;
+use App\Http\Controllers\ExamenController;
+use App\Http\Controllers\HistoriqueQcmController;
+use App\Http\Controllers\QcmController;
 use Illuminate\Support\Facades\Log;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -33,6 +37,10 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('categories', CategoryController::class)->except('index');
         Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
         Route::patch('/users/{id}/toggle-active', [UserController::class, 'toggleUserActive']);
+        Route::apiResource('category-qcms', CategoryQcmController::class);
+        Route::apiResource('qcms', QcmController::class);
+        Route::apiResource('examens', ExamenController::class)->except("show");
+        Route::post('examens/{id}/publish', [ExamenController::class, 'publish']);
     });
     
     Route::apiResource('users', UserController::class)->only('index', 'show');
@@ -44,6 +52,12 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/quizzes', [QuizController::class, 'index']);
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);
+    Route::get('examens', [ExamenController::class, 'index']);
+    Route::get('/examens/results', [ExamenController::class, 'allResults']); // Tous les résultats
+    Route::post('examens/{id}/submit', [ExamenController::class, 'submit']);
+    Route::get('examens/{id}', [ExamenController::class, 'show']);
+    Route::get('/examens/{id}/results', [ExamenController::class, 'results']); // Résultats d’un examen spécifique
+    Route::get('historique-qcm', [HistoriqueQcmController::class, 'index']);
 
     Route::middleware('role:USER')->group(function () {
         Route::post('/quizzes/{quizId}/submit', [QuizController::class, 'submit']);
@@ -51,7 +65,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/challenges/accept/{challengeId}', [ChallengeController::class, 'accept']);
         Route::post('/challenges/decline/{challengeId}', [ChallengeController::class, 'decline']);
         Route::get('/challenges/active', [ChallengeController::class, 'activeChallenges']);
-        // Route::post('/challenges/start/{challengeId}', [ChallengeController::class, 'start']);
         Route::get('/challenges/{challengeId}', [ChallengeController::class, 'show']);
         Route::post('/challenges/submit/{challengeId}', [ChallengeController::class, 'submitAnswer']);
         Route::post('/challenges/abandon/{challengeId}', [ChallengeController::class, 'abandon']);

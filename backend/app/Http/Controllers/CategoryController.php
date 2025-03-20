@@ -16,10 +16,9 @@ class CategoryController extends Controller
 
     public function store11(Request $request)
     {
-        // Validation des données JSON
         $validator = Validator::make($request->all(), [
-            'categories' => 'required|array', // Vérifie qu'on a un tableau de catégories
-            'categories.*.name' => 'required|string|max:255|unique:categories,name', // Validation du nom unique
+            'categories' => 'required|array',
+            'categories.*.name' => 'required|string|max:255|unique:categories,name',
             'categories.*.description' => 'required|string' // Validation de la description
         ]);
 

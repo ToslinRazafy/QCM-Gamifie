@@ -236,7 +236,7 @@ class AuthController extends Controller
         $socialUser = Socialite::driver('facebook')->stateless()->user();
         $user = $this->handleSocialLogin($socialUser->getEmail(), $socialUser->getName());
         $token = JWTAuth::fromUser($user);
-        return redirect("http://localhost:3000/callback?token=$token");
+        return redirect("http://192.168.43.49:3000/callback?token=$token");
     }
 
     public function redirectToGoogle()
@@ -249,7 +249,7 @@ class AuthController extends Controller
         $socialUser = Socialite::driver('google')->stateless()->user();
         $user = $this->handleSocialLogin($socialUser->getEmail(), $socialUser->getName());
         $token = JWTAuth::fromUser($user);
-        return redirect("http://localhost:3000/callback?token=$token");
+        return redirect("http://192.168.43.49:3000/callback?token=$token");
     }
 
     private function handleSocialLogin($email, $name)

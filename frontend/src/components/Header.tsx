@@ -21,6 +21,8 @@ import {
   Users,
   MessageSquare,
   Clock,
+  SwitchCamera,
+  Book,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
@@ -42,6 +44,7 @@ const navItems: NavItem[] = [
   { label: "Défis", href: "/platform/challenges", icon: Trophy },
   { label: "Posts", href: "/platform/posts", icon: MessageSquare },
   { label: "Historique", href: "/platform/history", icon: Clock },
+  { label: "Mode Qcm", href: "/examen", icon: Book },
 ];
 
 export default function Header() {
@@ -90,7 +93,7 @@ export default function Header() {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await fetch("http://localhost:8000/api/logout", {
+        await fetch("http://192.168.43.49:8000/api/logout", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -192,6 +195,10 @@ export default function Header() {
         </div>
       </header>
     );
+  }
+
+  if(!user?.is_active) {
+    router.push("/platform/settings");
   }
 
   return (
@@ -381,7 +388,7 @@ export default function Header() {
                   className="flex items-center w-full"
                 >
                   <User className="mr-2 h-4 w-4" />
-                  <span>Profil</span>
+                  <span>Profil ssdsd</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

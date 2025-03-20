@@ -249,7 +249,7 @@ class ChallengeController extends Controller
 
         $data = $request->validate([
             'question_id' => 'required|integer',
-            'answer_id' => 'required|integer', // -1 pour timeout
+            'answer_id' => 'required|integer',
         ]);
 
         $shuffledQuestions = json_decode($challenge->shuffled_questions, true);
@@ -260,7 +260,6 @@ class ChallengeController extends Controller
         }
 
         DB::transaction(function () use ($challenge, $user, $data, $shuffledQuestions) {
-            // Si la question a déjà été répondue, on ne fait rien
             if ($challenge->question_answered_by) {
                 Log::info("Question déjà répondue, ignorée", [
                     'challenge_id' => $challenge->id,
@@ -270,7 +269,6 @@ class ChallengeController extends Controller
                 return;
             }
 
-            // Gestion du timeout
             if ($data['answer_id'] === -1) {
                 Log::info("Timeout détecté", [
                     'challenge_id' => $challenge->id,
@@ -298,7 +296,6 @@ class ChallengeController extends Controller
                 }
             }
 
-            // Passage à la question suivante ou fin du défi
             if ($challenge->current_question_index < count($shuffledQuestions) - 1) {
                 $challenge->current_question_index++;
                 $challenge->question_answered_by = null;

@@ -14,6 +14,8 @@ import { Switch } from "@/components/ui/switch";
 import { Trash } from "lucide-react";
 import api from "@/lib/api";
 import { motion } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { URL_IMG_BACKEND } from "@/constant";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -65,10 +67,13 @@ export default function Users() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Photo</TableHead>
             <TableHead>Nom</TableHead>
+            <TableHead>Pseudo</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>XP</TableHead>
             <TableHead>Ligue</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Actif</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -91,10 +96,25 @@ export default function Users() {
                 animate={{ y: 0 }}
                 transition={{ duration: 0.2 }}
               >
+                <TableCell>
+                  <div className="relative">
+                    <Avatar>
+                      <AvatarImage src={`${URL_IMG_BACKEND}/${user.avatar}`} />
+                      <AvatarFallback>{user.firstname[0]}</AvatarFallback>
+                    </Avatar>
+                    {user.status === "online" && (
+                      <span className="absolute top-0 right-3 w-3 h-3 bg-[hsl(var(--primary))] rounded-full border-2 border-white" />
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>{user.firstname} {user.lastname ? user.lastname : ""}</TableCell>
                 <TableCell>{user.pseudo}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.xp}</TableCell>
                 <TableCell>{user.league}</TableCell>
+                <TableCell>
+                  {user.status === "online" ? "En Ligne" : "Hors Ligne"}
+                </TableCell>
                 <TableCell>
                   <Switch
                     checked={user.is_active}

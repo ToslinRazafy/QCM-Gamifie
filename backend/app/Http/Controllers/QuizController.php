@@ -231,9 +231,15 @@ class QuizController extends Controller
             $score = 0;
 
             foreach ($data['responses'] as $response) {
-                $answer = Answer::find($response['answer_id']);
+                $answer = Answer::with('question.quiz')->findOrFail($response['answer_id']);
                 if ($answer->is_correct) {
-                    $score += 10;
+                    if($answer->question->quiz->niveau === "Facile"){
+                        $score += 10;
+                    }elseif($answer->question->quiz->niveau === "Moyen"){
+                        $score += 20;
+                    }else{
+                        $score += 30;
+                    }
                 }
 
                 UserResponse::create([

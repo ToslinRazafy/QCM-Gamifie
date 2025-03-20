@@ -269,7 +269,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen p-6">
       <h1 className="text-3xl font-bold mb-6">Paramètres</h1>
-
+      {!user?.is_active && <p className="mb-4 bg-red-500/50 p-4 text-center rounded-lg">Veilliez active votre compte pour pouvoir acceder à toute les fonctionnalite</p> }
       <div className="flex flex-col md:flex-row md:space-x-6">
         {/* Menu à gauche (Desktop) ou plein écran (Mobile) */}
         <div

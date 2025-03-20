@@ -152,7 +152,9 @@ class UserController extends Controller
     public function dashboard()
     {
         $totalUsers = User::count();
-        $activeUsers = User::where('status', 'online')->count();
+        $activeUsers = User::where('status', 'online')
+                   ->where('role', 'USER')
+                   ->count();
         $quizzes = Quiz::count();
         $challenges = Challenge::count();
 

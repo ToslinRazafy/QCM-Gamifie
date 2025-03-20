@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
 import { Trophy, Swords, Users, Zap } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 
 export default function Home() {
@@ -39,29 +39,49 @@ export default function Home() {
     }
   };
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    { src: "/hero.png", alt: "Accueil de la plateforme" },
+    { src: "/hero2.png", alt: "Amis" },
+    { src: "/hero3.png", alt: "Défi" },
+    { src: "/hero4.png", alt: "Post" },
+  ];
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
     <div className="min-h-screen bg-[hsl(var(--background))]">
       <Navbar navItems={navItems} scrollToSection={scrollToSection} />
 
-      {/* Hero Section */}
+      {/* Hero Section avec Carrousel */}
       <section
         id="home"
         ref={sectionRefs.home}
-        className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-20 pb-10 md:pt-24 bg-gradient-to-b from-[hsl(var(--background))] to-[hsl(var(--muted))]"
+        className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-20 pb-10 md:pt-24 bg-gradient-to-b from-[hsl(var(--background))] to-[hsl(var(--muted))] relative overflow-hidden"
       >
-        <motion.h1
+        {/* Contenu textuel au-dessus de l'image */}
+        <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-[hsl(var(--primary))]"
+          className="z-20 mb-6"
         >
-          QCM Gamifié
-        </motion.h1>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(var(--primary))]">
+            QCM Gamifié
+          </h1>
+        </motion.div>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-base md:text-lg lg:text-xl mb-8 max-w-xl text-[hsl(var(--foreground))] leading-relaxed"
+          className="z-20 text-base md:text-lg lg:text-xl mb-8 max-w-xl text-[hsl(var(--foreground))] leading-relaxed"
         >
           Testez vos connaissances, défiez vos amis et grimpez dans les ligues
           avec une expérience ludique et interactive !
@@ -70,7 +90,7 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4"
+          className="z-20 flex flex-col sm:flex-row gap-4 mb-8"
         >
           <Button
             asChild
@@ -88,20 +108,56 @@ export default function Home() {
             <Link href="#features">Découvrir</Link>
           </Button>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.8 }}
-          className="mt-12 w-full max-w-2xl"
-        >
-          <Image
-            src="/images/hero.png"
-            alt="Plateforme QCM"
-            width={600}
-            height={400}
-            className="rounded-xl shadow-xl object-cover"
-          />
-        </motion.div>
+
+        {/* Carrousel d'images avec fond flouté */}
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.5 }}
+            className="w-full h-full relative"
+          >
+            <Image
+              src={slides[currentSlide].src}
+              alt={slides[currentSlide].alt}
+              fill
+              className="object-cover rounded-xl shadow-xl"
+              priority
+            />
+            {/* Fond flouté avec faible opacité */}
+            <div className="absolute inset-0 bg-black/60  z-10"></div>
+          </motion.div>
+
+          {/* Boutons de navigation */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] p-2 rounded-full z-20 hover:bg-[hsl(var(--primary))]/80"
+          >
+            ❮
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] p-2 rounded-full z-20 hover:bg-[hsl(var(--primary))]/80"
+          >
+            ❯
+          </button>
+
+          {/* Indicateurs de diapositives */}
+          <div className="absolute bottom-4 flex gap-2 z-20">
+            {slides.map((_, index) => (
+              <span
+                key={index}
+                className={`h-2 w-2 rounded-full ${
+                  currentSlide === index
+                    ? "bg-[hsl(var(--primary))]"
+                    : "bg-[hsl(var(--muted-foreground))] opacity-50"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Features Section */}
@@ -190,7 +246,7 @@ export default function Home() {
             className="w-full md:w-1/2"
           >
             <Image
-              src="/images/about.png"
+              src="/hero.png"
               alt="À propos"
               width={400}
               height={300}

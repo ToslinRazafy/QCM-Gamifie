@@ -51,7 +51,7 @@ interface Post {
 }
 
 const URL_IMG_BACKEND =
-  process.env.NEXT_PUBLIC_IMG_BACKEND_URL || "http://localhost:8000";
+  process.env.NEXT_PUBLIC_IMG_BACKEND_URL || "http://192.168.43.49:8000";
 
 export default function PostsPage() {
   const { user, isAuthenticated, isLoading } = useAuth();

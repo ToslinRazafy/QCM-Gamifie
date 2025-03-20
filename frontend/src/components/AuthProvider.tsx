@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(response.data);
         console.log("User chargé dans AuthProvider:", response.data);
 
-        const protectedRoutes = ["/platform", "/platform/friends", "/platform/posts", "/admin", "/platform/challenges"];
+        const protectedRoutes = ["/platform", "/examen","/platform/friends", "/platform/posts", "/admin", "/platform/challenges"];
         const isOnProtectedRoute = protectedRoutes.some((route) =>
           pathname.startsWith(route)
         );
@@ -83,7 +83,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (response.data.role === "ADMIN") {
             router.push("/admin");
           } else {
-            router.push("/platform");
+            if(user?.is_active){
+              router.push("/platform");
+            }
           }
         }
       } catch (error) {
@@ -97,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     fetchUserData();
-  }, [router, pathname]); // Ajout de pathname comme dépendance
+  }, [router, pathname]);
 
   const logout = async () => {
     try {

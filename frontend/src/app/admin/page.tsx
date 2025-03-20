@@ -8,6 +8,9 @@ import Categories from "./categories/page";
 import Settings from "./settings/page";
 import { useAuth } from "@/components/AuthProvider";
 import Loader from "@/components/Loader"; // Assurez-vous que le chemin est correct
+import CategoryQcms from "./category-qcms/page";
+import Qcms from "./qcms/page";
+import Examens from "./examens/page";
 
 export default function AdminPage({ params }: { params: { slug: string[] } }) {
   const [slug] = params.slug || [];
@@ -26,6 +29,12 @@ export default function AdminPage({ params }: { params: { slug: string[] } }) {
       return <Users />;
     case "categories":
       return <Categories />;
+    case "category-qcms":
+      return <CategoryQcms/>
+    case "qcms":
+      return <Qcms/>
+    case "examens":
+      return <Examens/>
     case "settings":
       return <Settings />;
     default:
