@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
 export default function HeaderExamen() {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const [isDesktopOpen, setIsDesktopOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -46,7 +46,7 @@ export default function HeaderExamen() {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await fetch("http://192.168.43.49:8000/api/logout", {
+        await fetch("http://localhost:8000/api/logout", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +57,6 @@ export default function HeaderExamen() {
       console.error("Erreur lors de la déconnexion :", error);
     } finally {
       localStorage.removeItem("token");
-      setUser(null);
       router.push("/login");
     }
   };
@@ -97,7 +96,6 @@ export default function HeaderExamen() {
 
   return (
     <>
-      {/* Desktop Navigation */}
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -194,7 +192,6 @@ export default function HeaderExamen() {
         </div>
       </motion.nav>
 
-      {/* Mobile Navigation */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-[hsl(var(--card))] border-b border-[hsl(var(--border))] px-6 py-4 flex justify-between items-center">
         <Link href="/examen">
           <h1 className="text-2xl font-bold text-[hsl(var(--primary))]">
@@ -248,7 +245,6 @@ export default function HeaderExamen() {
         </div>
       </div>
 
-      {/* Mobile Bottom Bar */}
       <motion.div
         variants={barVariants}
         initial="hidden"

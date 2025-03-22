@@ -1,39 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import dynamic from "next/dynamic";
-import api from "@/lib/api";
-import { useAuth } from "@/components/AuthProvider";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PenIcon } from "lucide-react";
+import Link from "next/link";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { RadialBarChart, RadialBar } from "recharts";
+import api from "@/lib/api"
+import { useAuth } from "@/components/AuthProvider";
 
-// Dynamic imports for Recharts components
-const PieChart = dynamic(() => import("recharts").then((mod) => mod.PieChart), {
-  ssr: false,
-});
-const Pie = dynamic(() => import("recharts").then((mod) => mod.Pie), {
-  ssr: false,
-});
-const Cell = dynamic(() => import("recharts").then((mod) => mod.Cell), {
-  ssr: false,
-});
-const Tooltip = dynamic(() => import("recharts").then((mod) => mod.Tooltip), {
-  ssr: false,
-});
-const Legend = dynamic(() => import("recharts").then((mod) => mod.Legend), {
-  ssr: false,
-});
-const RadialBarChart = dynamic(
-  () => import("recharts").then((mod) => mod.RadialBarChart),
-  { ssr: false }
-);
-const RadialBar = dynamic(
-  () => import("recharts").then((mod) => mod.RadialBar),
-  { ssr: false }
-);
 
 export default function ExamenDashboard() {
   const [examens, setExamens] = useState<any[]>([]);

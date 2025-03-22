@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -16,11 +16,25 @@ export function ModeToggle() {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
   };
 
+  useEffect(() => {
+    if (!mounted) return;
+
+    const root = document.documentElement;
+    const currentClasses = Array.from(root.classList);
+    const filteredClasses = currentClasses.filter(
+      (cls) => cls !== "dark" && cls !== "light"
+    );
+    const newClasses = [resolvedTheme, ...filteredClasses];
+
+    root.className = newClasses.join(" ");
+  }, [resolvedTheme, mounted]);
+
   if (!mounted) {
-    return null; // Ne rend rien côté serveur pour éviter l'hydratation mismatch
+    return null;
   }
 
   return (
@@ -34,13 +48,17 @@ export function ModeToggle() {
         <Sun
           className={cn(
             "h-[1.2rem] w-[1.2rem] transition-all",
-            theme === "dark" ? "rotate-90 scale-0" : "rotate-0 scale-100"
+            resolvedTheme === "dark"
+              ? "rotate-90 scale-0"
+              : "rotate-0 scale-100"
           )}
         />
         <Moon
           className={cn(
             "absolute h-[1.2rem] w-[1.2rem] transition-all",
-            theme === "dark" ? "rotate-0 scale-100" : "-rotate-90 scale-0"
+            resolvedTheme === "dark"
+              ? "rotate-0 scale-100"
+              : "-rotate-90 scale-0"
           )}
         />
         <span className="sr-only">Toggle theme</span>

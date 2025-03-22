@@ -7,7 +7,7 @@ export const getSocket = (token: string, userId?: string): Socket => {
     if (socketInstance) socketInstance.disconnect();
 
     socketInstance = io(
-      process.env.NEXT_PUBLIC_SOCKET_IO_URL || "http://192.168.43.49:3001",
+      process.env.NEXT_PUBLIC_SOCKET_IO_URL || "http://localhost:3001",
       {
         auth: { token, userId }, // Ajout de userId dans auth pour faciliter l'identification
         query: userId ? { userId } : {},

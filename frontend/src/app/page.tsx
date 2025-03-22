@@ -302,7 +302,7 @@ export default function Home() {
             className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-[hsl(var(--primary-foreground))] rounded-full shadow-lg"
             asChild
           >
-            <a href="mailto:support@qcmgamifie.com">Envoyer un email</a>
+            <a href="mailto:razafitosy@gmail.com">Envoyer un email</a>
           </Button>
         </motion.div>
       </section>

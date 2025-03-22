@@ -21,15 +21,13 @@ import {
   Users,
   MessageSquare,
   Clock,
-  SwitchCamera,
   Book,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
-import { getSocket, registerUser, isSocketConnected } from "@/lib/socket";
+import { getSocket, registerUser } from "@/lib/socket";
 import { Badge } from "@/components/ui/badge";
 import api from "@/lib/api";
-import { useRouter } from "next/navigation";
 import { URL_IMG_BACKEND } from "@/constant";
 
 interface NavItem {
@@ -62,6 +60,12 @@ export default function Header() {
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (isMounted && user && !user.is_active) {
+      router.push("/platform/settings");
+    }
+  }, [user, isMounted, router]);
+
   const fetchPendingRequests = async () => {
     try {
       const res = await api.get("/friends");
@@ -93,7 +97,7 @@ export default function Header() {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await fetch("http://192.168.43.49:8000/api/logout", {
+        await fetch("http://localhost:8000/api/logout", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -195,10 +199,6 @@ export default function Header() {
         </div>
       </header>
     );
-  }
-
-  if(!user?.is_active) {
-    router.push("/platform/settings");
   }
 
   return (
@@ -365,7 +365,6 @@ export default function Header() {
           </h1>
         </Link>
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-muted-foreground"></span>
           <ModeToggle />
           <DropdownMenu open={isMobileOpen} onOpenChange={setIsMobileOpen}>
             <DropdownMenuTrigger asChild>
@@ -388,7 +387,7 @@ export default function Header() {
                   className="flex items-center w-full"
                 >
                   <User className="mr-2 h-4 w-4" />
-                  <span>Profil ssdsd</span>
+                  <span>Profil</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

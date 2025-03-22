@@ -1,4 +1,3 @@
-// src/app/layout.tsx
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" className="theme-platform" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"

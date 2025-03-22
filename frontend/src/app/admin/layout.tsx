@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     try {
       const token = localStorage.getItem("token");
       if (token) {
-        await fetch("http://192.168.43.49:8000/api/logout", {
+        await fetch("http://localhost:8000/api/logout", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

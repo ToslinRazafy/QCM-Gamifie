@@ -64,7 +64,7 @@ return [
             ],
             'servers' => [
                 [
-                    'host' => env('MEMCACHED_HOST', '192.168.43.49'),
+                    'host' => env('MEMCACHED_HOST', 'localhost'),
                     'port' => env('MEMCACHED_PORT', 11211),
                     'weight' => 100,
                 ],
@@ -103,6 +103,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
+    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_cache_'),
 
 ];

@@ -18,7 +18,7 @@ trait BroadcastsToSocketIO
         foreach ($channels as $channel) {
             $channelName = $channel instanceof Channel ? $channel->name : $channel;
 
-            Http::post(env('SOCKET_IO_URL', 'http://192.168.43.49:3001') . '/broadcast', [
+            Http::post(env('SOCKET_IO_URL', 'http://localhost:3001') . '/broadcast', [
                 'event' => $event,
                 'payload' => $payload,
                 'channel' => $channelName,
